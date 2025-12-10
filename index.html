@@ -86,9 +86,12 @@
       gap: 12px;
       align-items: center;
     }
+    /* Fix: don't break words into single characters. Use normal word-break and allow wrapping when necessary. */
     .todo .text {
       max-width: calc(100% - 40px);
-      word-break: break-word;
+      overflow-wrap: anywhere;
+      word-break: normal;
+      white-space: normal;
     }
     button.remove {
       border: none;
