@@ -30,104 +30,49 @@
       box-shadow: 0 10px 30px rgba(16,24,40,0.08);
       padding: 24px;
     }
-    h1 {
-      margin: 0 0 12px 0;
-      font-size: 1.4rem;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    p.lead {
-      margin: 0 0 18px 0;
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-    form.add {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 18px;
-    }
-    input[type="text"] {
-      flex: 1;
-      padding: 10px 12px;
-      border-radius: 8px;
-      border: 1px solid #e6e9ee;
-      font-size: 1rem;
-      outline: none;
-    }
-    button.add-btn {
-      background: var(--accent);
-      color: white;
-      border: none;
-      padding: 10px 14px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-    }
-    ul.todos {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: grid;
-      gap: 8px;
-    }
+    h1 { margin: 0 0 12px 0; font-size: 1.4rem; display:flex; gap:12px; }
+    p.lead { margin: 0 0 18px 0; color: var(--muted); font-size: 0.95rem; }
+
+    form.add { display:flex; gap:8px; margin-bottom:18px; }
+    input[type="text"] { flex:1; padding:10px 12px; border-radius:8px; border:1px solid #e6e9ee; font-size:1rem; }
+    button.add-btn { background:var(--accent); color:#fff; border:0; padding:10px 14px; border-radius:8px; cursor:pointer; }
+
+    ul.todos { list-style:none; padding:0; margin:0; display:grid; gap:8px; }
     li.todo {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 12px;
-      border-radius: 8px;
-      background: #fafbfc;
-      border: 1px solid #eef2f7;
-      font-size: 0.98rem;
-    }
-    .todo .left {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      /* allow children to shrink inside the flex container */
-      min-width: 0;
-    }
-    /* Stronger fix: ensure normal wrapping and prevent per-character breaks */
-    .todo .text {
-      max-width: calc(100% - 40px);
-      min-width: 0;
-      overflow-wrap: break-word;
-      word-break: normal;
-      white-space: normal;
-      hyphens: auto;
-    }
-    button.remove {
-      border: none;
-      background: transparent;
-      color: #ef4444;
-      font-weight: 700;
-      cursor: pointer;
-      padding: 6px 8px;
-      border-radius: 6px;
-    }
-    .placeholder {
-      color: var(--muted);
-      text-align: center;
-      padding: 18px;
-    }
-    footer.note {
-      margin-top: 14px;
-      font-size: 0.82rem;
-      color: var(--muted);
       display:flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      padding:10px 12px;
+      border-radius:8px;
+      background:#fafbfc;
+      border:1px solid #eef2f7;
+      font-size:0.98rem;
     }
-    a.small {
-      color: var(--accent);
-      text-decoration: none;
+
+    .todo .left { display:flex; gap:12px; align-items:center; min-width:0; }
+
+    /* Strong universal fix: treat the todo text and any nested elements as inline so characters don't stack.
+       This addresses both CSS forcing inline elements to block and JS that wrapped each char. */
+    .todo .text,
+    .todo .text * {
+      display: inline !important;    /* ensure nested elements don't become block-level */
+      vertical-align: baseline;
+      min-width: 0 !important;        /* allow flex children to shrink */
+      max-width: calc(100% - 40px);
+      white-space: normal !important; /* allow normal wrapping */
+      word-break: normal !important;  /* avoid per-character breaking */
+      overflow-wrap: anywhere !important; /* allow long words to break sensibly */
+      hyphens: auto !important;
     }
+
+    button.remove { border: none; background: transparent; color:#ef4444; font-weight:700; cursor:pointer; padding:6px 8px; border-radius:6px; }
+
+    .placeholder { color:var(--muted); text-align:center; padding:18px; }
+    footer.note { margin-top:14px; font-size:0.82rem; color:var(--muted); display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+
     @media (max-width:560px){
       .app{ padding:16px }
-      form.add{ flex-direction: column; align-items: stretch }
+      form.add{ flex-direction:column; align-items:stretch }
       button.add-btn{ width:100% }
     }
   </style>
@@ -143,7 +88,6 @@
     </form>
 
     <ul class="todos" id="todosList" aria-live="polite"></ul>
-
     <div id="empty" class="placeholder" hidden>No to‑dos yet — add your first item above.</div>
 
     <footer class="note">
@@ -152,7 +96,6 @@
     </footer>
   </main>
 
-  <!-- Load the app script as a module (script.js will import Firebase SDK modules) -->
   <script type="module" src="./script.js"></script>
 </body>
 </html>
