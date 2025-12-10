@@ -1,12 +1,151 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>SkyWeb</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>To‑Do List</title>
+  <style>
+    :root {
+      --bg: #f6f8fa;
+      --card: #ffffff;
+      --accent: #0366d6;
+      --muted: #6a737d;
+    }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg, #eef2ff 0%, var(--bg) 100%);
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+      color: #111827;
+    }
+    .app {
+      width: 100%;
+      max-width: 720px;
+      background: var(--card);
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(16,24,40,0.08);
+      padding: 24px;
+    }
+    h1 {
+      margin: 0 0 12px 0;
+      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    p.lead {
+      margin: 0 0 18px 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    form.add {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    input[type="text"] {
+      flex: 1;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #e6e9ee;
+      font-size: 1rem;
+      outline: none;
+    }
+    button.add-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    ul.todos {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 8px;
+    }
+    li.todo {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: #fafbfc;
+      border: 1px solid #eef2f7;
+      font-size: 0.98rem;
+    }
+    .todo .left {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .todo .text {
+      max-width: calc(100% - 40px);
+      word-break: break-word;
+    }
+    button.remove {
+      border: none;
+      background: transparent;
+      color: #ef4444;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 6px 8px;
+      border-radius: 6px;
+    }
+    .placeholder {
+      color: var(--muted);
+      text-align: center;
+      padding: 18px;
+    }
+    footer.note {
+      margin-top: 14px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      display:flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap:wrap;
+    }
+    a.small {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    @media (max-width:560px){
+      .app{ padding:16px }
+      form.add{ flex-direction: column; align-items: stretch }
+      button.add-btn{ width:100% }
+    }
+  </style>
 </head>
 <body>
-  <h1>Sky Webpage</h1>
-  <p>Welcome to the Sky Webpage — a simple demo page.</p>
+  <main class="app" role="main">
+    <h1>🗒️ To‑Do List</h1>
+    <p class="lead">Add items to your list and remove them when done. Items are saved to Firebase Firestore in realtime.</p>
+
+    <form class="add" id="addForm" autocomplete="off">
+      <input id="todoInput" type="text" placeholder="Add a new to‑do item..." aria-label="New to-do item" />
+      <button class="add-btn" type="submit">Add</button>
+    </form>
+
+    <ul class="todos" id="todosList" aria-live="polite"></ul>
+
+    <div id="empty" class="placeholder" hidden>No to‑dos yet — add your first item above.</div>
+
+    <footer class="note">
+      <div>Realtime updates via Firebase Firestore</div>
+      <div><a class="small" href="https://firebase.google.com/docs/firestore" target="_blank" rel="noopener">Firestore docs</a></div>
+    </footer>
+  </main>
+
+  <!-- Load the app script as a module (script.js will import Firebase SDK modules) -->
+  <script type="module" src="./script.js"></script>
 </body>
 </html>
